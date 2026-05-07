@@ -597,7 +597,7 @@ function addLog(msg, cls) {
 // ═══════════════════════════════════════════
 function generate() {
   if (!photos.length) return;
-  if (!API_KEY) { document.getElementById('key-screen').style.display = 'flex'; return; }
+  // API key handled server-side on Vercel
 
   document.getElementById('plog').innerHTML = '';
   document.querySelectorAll('.panel').forEach(function(p) { p.classList.remove('on'); });
