@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>POLARIX VISIO REPORT™</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#1B2035;--navy2:#252D45;
+  --orange:#E8821A;--orange2:#F59332;--obg:#FEF3E8;--otx:#7A4A0A;
+  --red:#D44C4C;--rbg:#FDEAEA;--rtx:#7A1F1F;
+  --amber:#C9941A;--abg:#FEF6E4;--atx:#7A5A0A;
+  --green:#2B8A4E;--gbg:#E8F7EF;--gtx:#1A5030;
+  --blue:#2D6BB5;--bbg:#EAF1FB;--btx:#1A3F80;
+  --g1:#F5F4F1;--g2:#ECEAE5;--g3:#D5D2C8;--g4:#9E9B93;--g5:#5C5A54;
+  --white:#fff;--text:#1B1F2A;
+  --f:'DM Sans',sans-serif;--m:'DM Mono',monospace;
+}
+html,body{height:100%;font-family:var(--f);color:var(--text);background:var(--g1);font-size:13px;overflow:hidden}
+
+
+
+/* APP */
+.app{display:flex;height:100vh;overflow:hidden}
+
+/* SIDEBAR */
+.sb{width:200px;min-width:200px;background:var(--navy);display:flex;flex-direction:column;height:100vh}
+.sb-head{padding:16px 14px 12px;border-bottom:1px solid rgba(255,255,255,.07)}
+.sb-logo{font-size:17px;font-weight:700;color:#fff;letter-spacing:-.02em}
+.sb-logo em{color:var(--orange2);font-style:normal}
+.sb-visio{font-size:8px;letter-spacing:.16em;color:var(--orange2);text-transform:uppercase;margin-top:2px}
+.sb-bi{font-size:7.5px;color:rgba(255,255,255,.2);text-transform:uppercase;letter-spacing:.09em;margin-top:1px}
+.sb-nav{flex:1;padding:8px 0;overflow-y:auto}
+.sb-s{padding:10px 14px 3px;font-size:7px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.2);font-weight:600}
+.nav-item{display:flex;align-items:center;gap:9px;padding:7px 14px;font-size:11.5px;color:rgba(255,255,255,.42);cursor:pointer;border-left:2px solid transparent;transition:all .15s;user-select:none}
+.nav-item:hover{color:rgba(255,255,255,.75);background:rgba(255,255,255,.04)}
+.nav-item.on{color:#fff;border-left-color:var(--orange2);background:rgba(232,130,26,.11);font-weight:500}
+.nav-item svg{width:14px;height:14px;flex-shrink:0;opacity:.65}
+.nav-item.on svg{opacity:1}
+.sb-foot{padding:12px 14px;border-top:1px solid rgba(255,255,255,.07);font-size:10px;color:rgba(255,255,255,.25);line-height:1.7}
+.sb-foot strong{display:block;color:rgba(255,255,255,.42);margin-bottom:1px}
+.sb-foot a{color:var(--orange2);text-decoration:none}
+
+/* MAIN */
+.main{flex:1;min-width:0;display:flex;flex-direction:column;height:100vh;overflow:hidden}
+
+/* TOPBAR */
+.topbar{background:var(--white);border-bottom:1px solid var(--g3);padding:0 18px;display:flex;align-items:center;min-height:52px;flex-shrink:0;gap:0}
+.tb-brand{padding-right:18px;border-right:1px solid var(--g2)}
+.tb-title{font-size:18px;font-weight:700;letter-spacing:-.02em;line-height:1}
+.tb-title em{color:var(--orange);font-style:normal}
+.tb-sub{font-size:8.5px;text-transform:uppercase;letter-spacing:.12em;color:var(--g4);margin-top:2px;font-weight:600}
+.tb-metas{display:flex;margin-left:auto}
+.tb-m{display:flex;flex-direction:column;justify-content:center;padding:0 14px;border-left:1px solid var(--g2)}
+.tb-ml{font-size:8px;text-transform:uppercase;letter-spacing:.09em;color:var(--g4);font-weight:600}
+.tb-mv{font-size:11.5px;font-weight:600;color:var(--text);margin-top:1px}
+.tb-mv2{font-size:9px;color:var(--g5)}
+
+/* PANELS */
+.panel{display:none;flex:1;overflow:hidden;flex-direction:column}
+.panel.on{display:flex}
+
+/* UPLOAD */
+.up-scroll{flex:1;overflow-y:auto;padding:18px 22px}
+.up-h1{font-size:16px;font-weight:700;margin-bottom:3px}
+.up-sub{font-size:11px;color:var(--g4);margin-bottom:14px}
+.fbox{background:var(--white);border:1px solid var(--g3);border-radius:8px;padding:13px 16px;margin-bottom:12px}
+.fgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.fg label{display:block;font-size:8px;text-transform:uppercase;letter-spacing:.09em;color:var(--g4);font-weight:600;margin-bottom:3px}
+.fg input{width:100%;padding:6px 8px;font-size:11px;font-family:var(--f);border:1px solid var(--g3);border-radius:5px;background:var(--g1);color:var(--text);outline:none}
+.fg input:focus{border-color:var(--orange2)}
+.dropzone{border:2px dashed var(--g3);border-radius:8px;padding:28px 18px;text-align:center;background:var(--white);cursor:pointer;transition:all .2s}
+.dropzone:hover,.dropzone.over{border-color:var(--orange2);background:var(--obg)}
+.dropzone h3{font-size:13px;font-weight:600;margin:8px 0 4px}
+.dropzone p{font-size:10.5px;color:var(--g4)}
+.drop-hint{font-size:9.5px;color:var(--orange);font-family:var(--m);margin-top:5px}
+.psec{margin-top:12px;display:none}
+.psec-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px}
+.psec-hdr h2{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--g5)}
+.chip{font-size:9px;padding:2px 9px;border-radius:10px;font-family:var(--m);font-weight:500;background:var(--obg);color:var(--otx)}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:7px}
+.pc{background:var(--white);border:1px solid var(--g3);border-radius:6px;overflow:hidden;position:relative}
+.pc img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block}
+.pc-info{padding:4px 6px}
+.pcat{font-size:7.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;padding:1px 5px;border-radius:3px;display:inline-block;margin-bottom:2px}
+.ct{background:#E6F1FB;color:#0C447C}.cf{background:var(--abg);color:var(--atx)}
+.cs{background:var(--rbg);color:var(--rtx)}.ce{background:var(--gbg);color:var(--gtx)}.cd{background:var(--g2);color:var(--g5)}
+.pname{font-size:8.5px;color:var(--g4);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pst{position:absolute;top:4px;right:4px;font-size:7.5px;font-weight:700;padding:1px 5px;border-radius:7px;background:rgba(0,0,0,.4);color:#fff}
+.pst.ok{background:var(--green)}
+
+.genbar{background:var(--white);border-top:1px solid var(--g3);padding:10px 22px;display:none;align-items:center;justify-content:space-between;flex-shrink:0}
+.gen-info{font-size:11px;color:var(--g4)}
+.gen-info b{color:var(--text)}
+.btn-gen{padding:8px 20px;background:var(--orange);color:#fff;border:none;border-radius:7px;font-size:12px;font-weight:700;font-family:var(--f);cursor:pointer;display:flex;align-items:center;gap:7px}
+.btn-gen:hover{background:var(--orange2)}
+
+/* PROGRESS */
+.prog-wrap{flex:1;display:flex;align-items:center;justify-content:center;padding:20px;background:var(--g1)}
+.prog-box{background:var(--white);border:1px solid var(--g3);border-radius:12px;padding:28px;width:380px;text-align:center}
+.prog-box h3{font-size:14px;font-weight:700;margin-bottom:4px}
+.prog-box p{font-size:10.5px;color:var(--g4);margin-bottom:14px}
+.pbar-bg{height:5px;background:var(--g2);border-radius:3px;overflow:hidden;margin-bottom:10px}
+.pbar{height:5px;background:var(--orange);border-radius:3px;width:0%;transition:width .4s}
+.plog{font-size:9.5px;font-family:var(--m);color:var(--g4);background:var(--g1);border-radius:6px;padding:8px 10px;text-align:left;max-height:80px;overflow-y:auto}
+.plog div{line-height:1.9}
+.plog .ok{color:var(--green)}
+.plog .err{color:var(--red)}
+
+/* DASHBOARD */
+.db-scroll{flex:1;overflow-y:auto}
+.db-body{padding:12px 16px;display:flex;flex-direction:column;gap:10px}
+.card{background:var(--white);border:1px solid var(--g3);border-radius:8px;padding:11px 13px}
+.chd{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--g5);margin-bottom:2px}
+.chd2{font-size:8.5px;color:var(--g4);margin-bottom:8px}
+
+/* ROW1 */
+.r1{display:grid;grid-template-columns:205px 1fr 255px 205px;gap:10px}
+
+/* INDEX */
+.idx-arc{position:relative;width:120px;height:66px;margin:4px auto 2px;overflow:hidden}
+.idx-arc svg{position:absolute;top:0;left:0;width:120px;height:120px}
+.idx-num{font-size:50px;font-weight:300;font-family:var(--m);line-height:1;display:flex;align-items:baseline;gap:2px;margin-top:2px}
+.idx-d{font-size:14px;color:var(--g4);font-weight:300}
+.idx-lv{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin:4px 0 5px}
+.idx-desc{font-size:10px;color:var(--g5);line-height:1.5}
+
+/* SCORES */
+.scgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;text-align:center;margin-top:4px}
+.sc-iw{width:34px;height:34px;border-radius:50%;border:1.5px solid var(--g3);display:flex;align-items:center;justify-content:center;margin:0 auto 4px}
+.sc-iw svg{width:16px;height:16px;stroke:var(--g4);fill:none}
+.sc-lbl{font-size:7.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--g4);margin-bottom:3px;font-weight:600;line-height:1.3}
+.sc-v{font-size:19px;font-weight:600;font-family:var(--m);line-height:1}
+.sc-s{font-size:7.5px;color:var(--g4)}
+.sc-bar-bg{height:3px;background:var(--g2);border-radius:2px;margin-top:4px;overflow:hidden}
+.sc-bar{height:3px;border-radius:2px}
+
+/* TOP5 */
+.t5{display:flex;align-items:center;gap:7px;padding:5px 0;border-bottom:1px solid var(--g2)}
+.t5:last-child{border-bottom:none}
+.t5-n{width:20px;height:20px;border-radius:50%;background:var(--g2);color:var(--g5);font-size:8px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.t5-nm{font-size:11px;font-weight:600;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.t5-loc{font-size:9px;color:var(--g4);margin-top:1px}
+.badge{font-size:8px;font-weight:700;padding:2px 8px;border-radius:3px;text-transform:uppercase;letter-spacing:.04em;border:none;cursor:pointer;white-space:nowrap}
+.bc{background:var(--rbg);color:var(--rtx)}.be{background:var(--obg);color:var(--otx)}
+.bm{background:var(--abg);color:var(--atx)}.bf{background:var(--gbg);color:var(--gtx)}
+
+/* HORIZON */
+.hz{display:flex;gap:9px;padding:6px 0;border-bottom:1px solid var(--g2);align-items:flex-start}
+.hz:last-child{border-bottom:none}
+.hz-ic{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.hz-ic svg{width:15px;height:15px;fill:none;stroke-width:1.5}
+.hz-per{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.07em}
+.hz-rl{display:flex;align-items:center;gap:5px;margin-top:1px}
+.hz-rlbl{font-size:8px;text-transform:uppercase;letter-spacing:.06em;color:var(--g4);font-weight:600}
+.hz-rv{font-size:8.5px;font-weight:700}
+.hz-desc{font-size:9.5px;color:var(--g5);line-height:1.45;margin-top:2px}
+
+/* ROW2 */
+.r2{display:grid;grid-template-columns:1.6fr 1fr 1fr;gap:10px}
+
+/* MAP */
+.map-box{position:relative;border-radius:6px;overflow:hidden}
+.map-box img{width:100%;display:block;border-radius:6px;cursor:crosshair}
+.map-ph{width:100%;aspect-ratio:16/10;background:#1e2535;border-radius:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px}
+.map-ph p{font-size:10px;color:rgba(255,255,255,.3);text-align:center;line-height:1.5}
+.map-leg{display:flex;gap:10px;flex-wrap:wrap;margin-top:7px;align-items:center}
+.ml-i{display:flex;align-items:center;gap:4px;font-size:9.5px;color:var(--g5)}
+.ml-d{width:9px;height:9px;border-radius:50%}
+.ml-lnk{font-size:9.5px;color:var(--orange);border:none;background:none;cursor:pointer;font-family:var(--f);font-weight:600;margin-left:auto}
+
+/* SYNTHESE */
+.sy-i{display:flex;align-items:flex-start;gap:7px;padding:5px 0;font-size:10.5px;line-height:1.5;color:var(--g5)}
+.sy-ck{width:16px;height:16px;border-radius:50%;background:var(--gbg);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.sy-ck svg{width:10px;height:10px;stroke:var(--green);fill:none;stroke-width:2.5}
+.sy-cta{margin-top:9px;background:var(--bbg);border-radius:6px;padding:8px 10px;font-size:9.5px;color:var(--btx);line-height:1.5}
+
+/* DONUT */
+.donut-wrap{display:flex;align-items:center;gap:12px}
+.donut-pos{position:relative;flex-shrink:0}
+.donut-ctr{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;pointer-events:none}
+.donut-tot{font-size:16px;font-weight:700;font-family:var(--m);color:var(--text)}
+.donut-lbl{font-size:7px;text-transform:uppercase;letter-spacing:.08em;color:var(--g4);line-height:1.3}
+.dl-r{display:flex;align-items:center;justify-content:space-between;padding:3px 0;font-size:10px}
+.dl-l{display:flex;align-items:center;gap:6px;color:var(--g5);min-width:0}
+.dl-d{width:8px;height:8px;border-radius:2px;flex-shrink:0}
+.dl-v{font-family:var(--m);font-weight:600;color:var(--text);font-size:9.5px;white-space:nowrap}
+.dl-note{margin-top:7px;font-size:8.5px;color:var(--btx);line-height:1.4}
+
+/* ROW3 */
+.r3-hd{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--g5);margin-bottom:7px}
+.r3{display:grid;grid-template-columns:repeat(5,1fr) 1.15fr;gap:10px;align-items:start}
+.am{background:var(--white);border:1px solid var(--g3);border-radius:6px;overflow:hidden}
+.am img,.am-ph{width:100%;aspect-ratio:4/3;object-fit:cover;display:block}
+.am-ph{background:var(--g2);display:flex;align-items:center;justify-content:center;font-size:18px}
+.am-body{padding:6px 8px}
+.am-num{font-size:8.5px;font-weight:700;color:var(--orange);text-transform:uppercase;margin-bottom:2px}
+.am-nm{font-size:9.5px;font-weight:600;line-height:1.3;margin-bottom:3px}
+.am-r{display:flex;align-items:center;gap:4px;font-size:8.5px;color:var(--g4);margin-top:2px}
+.am-r svg{width:10px;height:10px;flex-shrink:0;stroke:var(--g4);fill:none;stroke-width:1.5}
+
+/* PLAN */
+.plan-box{background:var(--white);border:1px solid var(--g3);border-radius:8px}
+.plan-in{padding:9px 11px}
+.plan-hds{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:7px}
+.phd{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;padding-bottom:5px;border-bottom:2px solid}
+.phd span{display:block;font-size:7.5px;font-weight:600;margin-top:1px;opacity:.8}
+.phd-u{color:var(--red);border-color:var(--red)}.phd-p{color:var(--orange);border-color:var(--orange)}.phd-s{color:var(--green);border-color:var(--green)}
+.plan-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.pi{display:flex;align-items:flex-start;gap:5px;padding:3.5px 0;border-bottom:1px solid var(--g2);font-size:9px;color:var(--g5);line-height:1.4}
+.pi:last-child{border-bottom:none}
+.pi input[type=checkbox]{width:10px;height:10px;flex-shrink:0;margin-top:2px;accent-color:var(--green);cursor:pointer}
+.plan-bdgs{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:7px;padding-top:6px;border-top:1px solid var(--g2)}
+.pb{text-align:center}
+.pb-l{font-size:7.5px;text-transform:uppercase;letter-spacing:.07em;color:var(--g4);font-weight:600}
+.pb-v{font-size:12.5px;font-weight:700;font-family:var(--m);margin-top:1px}
+.pbu{color:var(--red)}.pbp{color:var(--orange)}.pbs{color:var(--green)}
+
+/* FOOTER */
+.db-foot{background:var(--navy);padding:9px 16px;display:grid;grid-template-columns:repeat(4,1fr) auto;gap:10px;align-items:center;flex-shrink:0}
+.ft-i{display:flex;align-items:flex-start;gap:7px}
+.ft-ic{width:24px;height:24px;border-radius:4px;background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px}
+.ft-t{font-size:8px;font-weight:600;color:rgba(255,255,255,.55);text-transform:uppercase;letter-spacing:.06em}
+.ft-d{font-size:7.5px;color:rgba(255,255,255,.25);line-height:1.5;margin-top:1px}
+.ft-brand{text-align:right}
+.ft-bn{font-size:15px;font-weight:700;color:#fff;letter-spacing:-.02em}
+.ft-bn em{color:var(--orange2);font-style:normal}
+.ft-bv{font-size:7px;letter-spacing:.15em;color:var(--orange2);text-transform:uppercase}
+.ft-bs{font-size:7px;color:rgba(255,255,255,.2);margin-top:2px}
+
+/* TABS */
+.tab-scroll{flex:1;overflow-y:auto;padding:14px 16px}
+.tab-t{font-size:14px;font-weight:700;margin-bottom:12px}
+.empty{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:250px;text-align:center;color:var(--g4)}
+.empty h3{font-size:13px;font-weight:600;margin-top:8px;color:var(--g5)}
+.empty p{font-size:10.5px;margin-top:4px}
+.btn-new{margin-top:10px;padding:7px 16px;background:var(--orange);color:#fff;border:none;border-radius:6px;font-size:10.5px;font-weight:700;cursor:pointer;font-family:var(--f)}
+
+/* SCORES FULL */
+.sc-full{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.sfc{background:var(--white);border:1px solid var(--g3);border-radius:8px;padding:13px}
+.sfc-hd{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:9px}
+.sfc-t{font-size:12px;font-weight:600}
+.sfc-s{font-size:26px;font-weight:300;font-family:var(--m)}
+.sfc-bb{height:5px;background:var(--g2);border-radius:3px;overflow:hidden;margin-bottom:9px}
+.sfc-b{height:5px;border-radius:3px}
+.sfc-d{font-size:9.5px;color:var(--g5);line-height:1.5}
+.sfc-tag{margin-top:7px;font-size:8.5px;font-weight:700;padding:3px 8px;border-radius:4px;display:inline-block}
+
+/* ANOMALIES FULL */
+.af-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.afc{background:var(--white);border:1px solid var(--g3);border-radius:8px;overflow:hidden}
+.afc-ph{width:100%;aspect-ratio:16/9;object-fit:cover;display:block}
+.afc-ph-e{width:100%;aspect-ratio:16/9;background:var(--g2);display:flex;align-items:center;justify-content:center;font-size:20px}
+.afc-body{padding:9px 11px}
+.afc-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+.afc-id{font-size:8.5px;font-family:var(--m);color:var(--g4)}
+.afc-t{font-size:11.5px;font-weight:600;margin-bottom:3px}
+.afc-d{font-size:9.5px;color:var(--g5);line-height:1.5;margin-bottom:7px}
+.afc-ft{display:flex;justify-content:space-between;align-items:center;font-size:9.5px;padding-top:7px;border-top:1px solid var(--g2)}
+.afc-u{color:var(--g4)}
+.afc-a{color:var(--orange);font-weight:600}
+
+/* PLAN FULL */
+.pf-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.pfc{background:var(--white);border:1px solid var(--g3);border-radius:8px;padding:12px 13px}
+.pfc-hd{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding-bottom:7px;border-bottom:2px solid;margin-bottom:9px;display:flex;justify-content:space-between;align-items:baseline}
+.pfc-per{font-size:8px;font-weight:400;font-family:var(--m);opacity:.7}
+.pfc-i{display:flex;align-items:flex-start;gap:5px;padding:5px 0;border-bottom:1px solid var(--g2);font-size:10px;color:var(--g5);line-height:1.4}
+.pfc-i:last-child{border-bottom:none}
+.pfc-i input{width:10px;height:10px;flex-shrink:0;margin-top:2px;accent-color:var(--green);cursor:pointer}
+.pfc-bdg{margin-top:9px;padding-top:8px;border-top:1px solid var(--g2);text-align:center}
+.pfb-l{font-size:8px;text-transform:uppercase;letter-spacing:.08em;color:var(--g4);font-weight:600}
+.pfb-v{font-size:14px;font-weight:700;font-family:var(--m);margin-top:2px}
+
+/* BUDGET FULL */
+.bf-grid{display:grid;grid-template-columns:1.5fr 1fr;gap:12px}
+.bt{width:100%;border-collapse:collapse;font-size:10.5px}
+.bt th{text-align:left;font-size:8px;text-transform:uppercase;letter-spacing:.09em;color:var(--g4);padding:7px 11px;border-bottom:1px solid var(--g2);font-weight:600}
+.bt td{padding:8px 11px;border-bottom:1px solid var(--g2);color:var(--g5)}
+.bt tr:last-child td{border-bottom:none}
+.bt tr.tot td{font-weight:700;color:var(--text);font-size:12px;border-top:2px solid var(--g3);border-bottom:none}
+.b-range{font-family:var(--m);font-size:9.5px;color:var(--g4)}
+.b-bar-bg{height:4px;background:var(--g2);border-radius:2px;overflow:hidden;width:70px}
+.b-bar{height:4px;border-radius:2px}
+
+/* HISTORIQUE */
+.hist-card{background:var(--white);border:1px solid var(--g3);border-radius:8px;overflow:hidden}
+.ht{width:100%;border-collapse:collapse;font-size:10.5px}
+.ht th{text-align:left;font-size:8px;text-transform:uppercase;letter-spacing:.09em;color:var(--g4);padding:7px 12px;border-bottom:1px solid var(--g2);font-weight:600}
+.ht td{padding:8px 12px;border-bottom:1px solid var(--g2);color:var(--g5)}
+.ht tr:last-child td{border-bottom:none}
+.ev-up{color:var(--red);font-weight:600}
+.ev-dn{color:var(--green);font-weight:600}
+
+/* ANNEXES */
+.anx-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
+.anx{background:var(--white);border:1px solid var(--g3);border-radius:6px;overflow:hidden}
+.anx img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block}
+.anx-info{padding:5px 7px}
+.anx-id{font-size:8.5px;font-family:var(--m);color:var(--g4)}
+.anx-t{font-size:10px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+@media print{#key-screen,.sb,.genbar,.db-foot{display:none!important}.app{display:block}.main{height:auto}}
+</style>
+</head>
+<body>
+
+<!-- No key screen needed - API key is on server -->
+
+<!-- APP -->
+<div class="app">
+
+<!-- SIDEBAR -->
+<aside class="sb">
+  <div class="sb-head">
+    <div class="sb-logo">Polari<em>X</em></div>
+    <div class="sb-visio">VISIO™</div>
+    <div class="sb-bi">Building Intelligence</div>
+  </div>
+  <nav class="sb-nav">
+    <div class="sb-s">Mission</div>
+    <div class="nav-item on" id="n-upload" onclick="goTo('upload',this)">
+      <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>Nouvelle mission
+    </div>
+    <div class="sb-s">Rapport</div>
+    <div class="nav-item" id="n-dash" onclick="goTo('dash',this)">
+      <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Tableau de bord
+    </div>
+    <div class="nav-item" id="n-syn" onclick="goTo('syn',this)">
+      <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>Synthèse
+    </div>
+    <div class="nav-item" id="n-scores" onclick="goTo('scores',this)">
+      <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>Scores
+    </div>
+    <div class="nav-item" id="n-carto" onclick="goTo('carto',this)">
+      <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>Cartographie
+    </div>
+    <div class="nav-item" id="n-anom" onclick="goTo('anom',this)">
+      <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>Anomalies
+    </div>
+    <div class="nav-item" id="n-plan" onclick="goTo('plan',this)">
+      <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>Plan d'action
+    </div>
+    <div class="nav-item" id="n-budget" onclick="goTo('budget',this)">
+      <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Budget
+    </div>
+    <div class="nav-item" id="n-hist" onclick="goTo('hist',this)">
+      <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Historique
+    </div>
+    <div class="nav-item" id="n-anx" onclick="goTo('anx',this)">
+      <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>Annexes
+    </div>
+  </nav>
+  <div class="sb-foot">
+    <strong>Polarix Drone</strong>
+    <a href="mailto:contact@polarix-drone.fr">contact@polarix-drone.fr</a><br>
+    <a href="https://www.polarix-drone.fr" target="_blank">www.polarix-drone.fr</a>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="tb-brand">
+      <div class="tb-title">VISIO <em>DASHBOARD™</em></div>
+      <div class="tb-sub">Tableau de bord exécutif</div>
+    </div>
+    <div class="tb-metas">
+      <div class="tb-m"><div class="tb-ml">Immeuble</div><div class="tb-mv" id="tb-imm">—</div><div class="tb-mv2" id="tb-adr">—</div></div>
+      <div class="tb-m"><div class="tb-ml">Date inspection</div><div class="tb-mv" id="tb-date">—</div></div>
+      <div class="tb-m"><div class="tb-ml">Référence mission</div><div class="tb-mv" id="tb-ref">—</div></div>
+      <div class="tb-m"><div class="tb-ml">Type d'inspection</div><div class="tb-mv" style="font-size:9.5px">Inspection visuelle</div><div class="tb-mv2">aérienne par drone</div></div>
+    </div>
+  </div>
+
+  <!-- PANEL UPLOAD -->
+  <div class="panel on" id="panel-upload">
+    <div class="up-scroll">
+      <div class="up-h1">Nouvelle mission d'inspection</div>
+      <div class="up-sub">Renseignez les infos, importez vos photos — le rapport VISIO se génère automatiquement.</div>
+      <div class="fbox">
+        <div class="fgrid">
+          <div class="fg"><label>Référence dossier</label><input id="f-ref" value="PLX-2025-0521-01"></div>
+          <div class="fg"><label>Immeuble</label><input id="f-imm" placeholder="Ex: Immeuble Le Victor Hugo"></div>
+          <div class="fg"><label>Adresse</label><input id="f-adr" placeholder="26 rue Victor Hugo, Marseille"></div>
+          <div class="fg"><label>Syndic</label><input id="f-syn" placeholder="Nom du syndic"></div>
+          <div class="fg"><label>Surface (m²)</label><input id="f-surf" type="number" placeholder="1240"></div>
+          <div class="fg"><label>Date</label><input id="f-date" type="date"></div>
+        </div>
+      </div>
+      <div class="dropzone" id="dz">
+        <input type="file" id="fi" multiple accept="image/*" style="display:none">
+        <svg width="28" height="28" fill="none" stroke="#9E9B93" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"/></svg>
+        <h3>Glissez vos photos ici ou cliquez</h3>
+        <p>Toiture · Façades · EP · Sécurité · Équipements</p>
+        <p class="drop-hint">Analysées automatiquement par Claude Vision</p>
+      </div>
+      <div class="psec" id="psec">
+        <div class="psec-hdr"><h2>Photos importées</h2><span class="chip" id="pchip">0 photo</span></div>
+        <div class="pgrid" id="pgrid"></div>
+      </div>
+    </div>
+    <div class="genbar" id="genbar">
+      <div class="gen-info"><b id="gcnt">0 photos</b> — L'IA va classifier et générer le rapport complet.</div>
+      <button class="btn-gen" id="btngen">
+        <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"/></svg>
+        Générer le VISIO REPORT™
+      </button>
+    </div>
+  </div>
+
+  <!-- PANEL PROGRESS -->
+  <div class="panel" id="panel-prog">
+    <div class="prog-wrap">
+      <div class="prog-box">
+        <h3>Analyse en cours…</h3>
+        <p id="ptxt">Initialisation</p>
+        <div class="pbar-bg"><div class="pbar" id="pbar"></div></div>
+        <div class="plog" id="plog"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PANEL DASHBOARD -->
+  <div class="panel" id="panel-dash">
+    <div class="db-scroll">
+      <div id="db-empty" class="empty" style="margin:40px 0">
+        <svg width="44" height="44" fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24" opacity=".2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        <h3>Aucun rapport généré</h3>
+        <p>Importez des photos et lancez l'analyse.</p>
+        <button class="btn-new" onclick="goTo('upload',document.getElementById('n-upload'))">← Nouvelle mission</button>
+      </div>
+      <div id="db-main" style="display:none">
+        <div class="db-body">
+          <div class="r1" id="r1"></div>
+          <div class="r2" id="r2"></div>
+          <div><div class="r3-hd">Extrait des anomalies détectées</div><div class="r3" id="r3"></div></div>
+        </div>
+        <div class="db-foot">
+          <div class="ft-i"><div class="ft-ic">🛸</div><div><div class="ft-t">Méthodologie Polarix</div><div class="ft-d">Inspection visuelle aérienne<br>non destructive</div></div></div>
+          <div class="ft-i"><div class="ft-ic">📊</div><div><div class="ft-t">Expérience terrain</div><div class="ft-d">Référentiel POLARIX VISIO CORE™</div></div></div>
+          <div class="ft-i"><div class="ft-ic">⚡</div><div><div class="ft-t">Aide à la décision</div><div class="ft-d">Arbitrage et pilotage patrimonial</div></div></div>
+          <div class="ft-i"><div class="ft-ic">⚠️</div><div><div class="ft-t">Limites</div><div class="ft-d">Hors investigation intrusive<br>ou structurelle</div></div></div>
+          <div class="ft-brand"><div class="ft-bn">Polari<em>X</em></div><div class="ft-bv">VISIO™</div><div class="ft-bs">VOIR. COMPRENDRE. PRIORISER. AGIR.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PANEL SYNTHESE -->
+  <div class="panel" id="panel-syn"><div class="tab-scroll"><div class="tab-t">Synthèse exécutive</div><div id="syn-in" class="empty"><h3>Générez d'abord un rapport</h3></div></div></div>
+
+  <!-- PANEL SCORES -->
+  <div class="panel" id="panel-scores"><div class="tab-scroll"><div class="tab-t">Scores — VISIO SCORE™</div><div id="sc-in" class="empty"><h3>Générez d'abord un rapport</h3></div></div></div>
+
+  <!-- PANEL CARTO -->
+  <div class="panel" id="panel-carto"><div class="tab-scroll"><div class="tab-t">VISIO MAP™ — Cartographie</div><div id="carto-in" class="empty"><h3>Générez d'abord un rapport</h3></div></div></div>
+
+  <!-- PANEL ANOMALIES -->
+  <div class="panel" id="panel-anom"><div class="tab-scroll"><div class="tab-t">Anomalies détectées</div><div id="anom-in" class="empty"><h3>Générez d'abord un rapport</h3></div></div></div>
+
+  <!-- PANEL PLAN -->
+  <div class="panel" id="panel-plan"><div class="tab-scroll"><div class="tab-t">Plan d'action priorisé</div><div id="plan-in" class="empty"><h3>Générez d'abord un rapport</h3></div></div></div>
+
+  <!-- PANEL BUDGET -->
+  <div class="panel" id="panel-budget"><div class="tab-scroll"><div class="tab-t">Enveloppe budgétaire</div><div id="bud-in" class="empty"><h3>Générez d'abord un rapport</h3></div></div></div>
+
+  <!-- PANEL HISTORIQUE -->
+  <div class="panel" id="panel-hist">
+    <div class="tab-scroll"><div class="tab-t">VISIO TRACK™ — Historique</div>
+      <div class="hist-card"><table class="ht">
+        <thead><tr><th>Zone</th><th>N (2024)</th><th>N+1 (2025)</th><th>Évolution</th><th>Statut</th></tr></thead>
+        <tbody>
+          <tr><td>Noue zinc</td><td>Défaut léger</td><td>Ouverture avérée</td><td class="ev-up">⬆ Aggravation</td><td><span class="badge bc">Critique</span></td></tr>
+          <tr><td>Façade Ouest</td><td>Stable</td><td>Coulures marquées</td><td class="ev-up">⬆ Dégradation</td><td><span class="badge be">Élevé</span></td></tr>
+          <tr><td>Corniche entrée</td><td>Instable</td><td>Réparée</td><td class="ev-dn">⬇ Résolue</td><td><span class="badge bf">Résolue</span></td></tr>
+          <tr><td>Chéneaux</td><td>Obstrués</td><td>Nettoyés</td><td class="ev-dn">⬇ Amélioré</td><td><span class="badge bf">Résolu</span></td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </div>
+
+  <!-- PANEL ANNEXES -->
+  <div class="panel" id="panel-anx"><div class="tab-scroll"><div class="tab-t">Annexes photographiques</div><div id="anx-in" class="empty"><h3>Importez des photos</h3></div></div></div>
+
+</div><!-- /main -->
+</div><!-- /app -->
+
+<script>
+// ═══════════════════════════════════════════
+// GLOBALS
+// ═══════════════════════════════════════════
+var API_KEY = '';
+var photos = [];
+var report = null;
+var mission = {};
+var mapCount = 0;
+
+// ═══════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════
+document.getElementById('f-date').value = new Date().toISOString().split('T')[0];
+
+// API key handled server-side
+
+// Generate button
+document.getElementById('btngen').addEventListener('click', generate);
+
+// Drop zone
+var dz = document.getElementById('dz');
+dz.addEventListener('dragover', function(e) { e.preventDefault(); dz.classList.add('over'); });
+dz.addEventListener('dragleave', function() { dz.classList.remove('over'); });
+dz.addEventListener('drop', function(e) { e.preventDefault(); dz.classList.remove('over'); handleFiles(e.dataTransfer.files); });
+dz.addEventListener('click', function(e) { if (e.target.tagName !== 'INPUT') document.getElementById('fi').click(); });
+document.getElementById('fi').addEventListener('change', function() { handleFiles(this.files); });
+
+// ═══════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════
+function goTo(name, el) {
+  document.querySelectorAll('.panel').forEach(function(p) { p.classList.remove('on'); });
+  document.querySelectorAll('.nav-item').forEach(function(i) { i.classList.remove('on'); });
+  document.getElementById('panel-' + name).classList.add('on');
+  if (el) el.classList.add('on');
+}
+
+// ═══════════════════════════════════════════
+// FILE HANDLING
+// ═══════════════════════════════════════════
+function guessCat(n) {
+  n = n.toLowerCase();
+  if (/toit|faitage|ardoise|tuile|noue|vmc|cheminee|terrasse|zinc/.test(n)) return 'toiture';
+  if (/facade|enduit|fissure|balcon|corniche/.test(n)) return 'facade';
+  if (/secu|garde|fixation|ancrage/.test(n)) return 'securite';
+  if (/ep|cheneau|gouttiere|descente|pluvial/.test(n)) return 'ep';
+  return 'divers';
+}
+var catLbl = { toiture:'Toiture', facade:'Façade', securite:'Sécurité', ep:'EP', divers:'Divers' };
+var catCls = { toiture:'ct', facade:'cf', securite:'cs', ep:'ce', divers:'cd' };
+
+function handleFiles(files) {
+  Array.from(files).forEach(function(f) {
+    if (!f.type.startsWith('image/')) return;
+    var r = new FileReader();
+    r.onload = function(e) {
+      photos.push({ id: Date.now() + Math.random(), name: f.name, dataUrl: e.target.result, cat: guessCat(f.name), status: 'pending' });
+      renderPhotos();
+    };
+    r.readAsDataURL(f);
+  });
+}
+
+function renderPhotos() {
+  var grid = document.getElementById('pgrid');
+  grid.innerHTML = '';
+  photos.forEach(function(p) {
+    var c = document.createElement('div');
+    c.className = 'pc';
+    c.innerHTML = '<img src="' + p.dataUrl + '" alt="' + p.name + '">' +
+      '<span class="pst' + (p.status === 'done' ? ' ok' : '') + '">' + (p.status === 'done' ? '✓' : '…') + '</span>' +
+      '<div class="pc-info"><span class="pcat ' + catCls[p.cat] + '">' + catLbl[p.cat] + '</span><div class="pname">' + p.name + '</div></div>';
+    grid.appendChild(c);
+  });
+  var n = photos.length;
+  document.getElementById('psec').style.display = n ? 'block' : 'none';
+  document.getElementById('genbar').style.display = n ? 'flex' : 'none';
+  document.getElementById('pchip').textContent = n + ' photo' + (n > 1 ? 's' : '');
+  document.getElementById('gcnt').textContent = n + ' photo' + (n > 1 ? 's' : '');
+}
+
+// ═══════════════════════════════════════════
+// PROGRESS
+// ═══════════════════════════════════════════
+var sleep = function(ms) { return new Promise(function(r) { setTimeout(r, ms); }); };
+
+function setP(pct, txt) {
+  document.getElementById('pbar').style.width = pct + '%';
+  document.getElementById('ptxt').textContent = txt;
+}
+
+function addLog(msg, cls) {
+  var d = document.createElement('div');
+  if (cls) d.className = cls;
+  d.textContent = '› ' + msg;
+  var l = document.getElementById('plog');
+  l.appendChild(d);
+  l.scrollTop = l.scrollHeight;
+}
+
+// ═══════════════════════════════════════════
+// GENERATE
+// ═══════════════════════════════════════════
+function generate() {
+  if (!photos.length) return;
+  // API key handled server-side on Vercel
+
+  document.getElementById('plog').innerHTML = '';
+  document.querySelectorAll('.panel').forEach(function(p) { p.classList.remove('on'); });
+  document.getElementById('panel-prog').classList.add('on');
+
+  mission = {
+    ref: document.getElementById('f-ref').value || 'PLX-2026-001',
+    imm: document.getElementById('f-imm').value || 'Confidentiel',
+    adr: document.getElementById('f-adr').value || '—',
+    syn: document.getElementById('f-syn').value || '—',
+    surf: document.getElementById('f-surf').value || '—',
+    date: document.getElementById('f-date').value
+  };
+
+  setP(5, 'Préparation…');
+  addLog('Mission : ' + mission.ref);
+  addLog(photos.length + ' photo(s) chargée(s)');
+  setP(20, 'Envoi à Claude Vision…');
+
+  callAPI().then(function(data) {
+    setP(85, 'Structuration du rapport…');
+    addLog('Anomalies : ' + data.anomalies.length, 'ok');
+    addLog('VISIO INDEX : ' + data.visio_index + '/100', 'ok');
+    addLog('Budget : ' + fmt(data.budget_total_min) + '–' + fmt(data.budget_total_max) + ' €', 'ok');
+    return sleep(400).then(function() {
+      setP(100, 'Rapport prêt ✓');
+      return sleep(500);
+    }).then(function() {
+      photos.forEach(function(p) { p.status = 'done'; });
+      renderPhotos();
+      report = data;
+      renderAll(data);
+    });
+  }).catch(function(err) {
+    addLog('Erreur : ' + err.message, 'err');
+    setP(0, 'Erreur — vérifiez votre clé API');
+    sleep(3000).then(function() { goTo('upload', document.getElementById('n-upload')); });
+  });
+}
+
+// ═══════════════════════════════════════════
+// API CALL
+// ═══════════════════════════════════════════
+function compressImage(dataUrl, maxWidth) {
+  return new Promise(function(resolve) {
+    var img = new Image();
+    img.onload = function() {
+      var canvas = document.createElement('canvas');
+      var ratio = Math.min(maxWidth / img.width, maxWidth / img.height, 1);
+      canvas.width = Math.round(img.width * ratio);
+      canvas.height = Math.round(img.height * ratio);
+      var ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      resolve(canvas.toDataURL('image/jpeg', 0.7));
+    };
+    img.src = dataUrl;
+  });
+}
+
+function callAPI() {
+  // Compress images first, then send max 6 photos
+  var selectedPhotos = photos.slice(0, 6);
+  return Promise.all(selectedPhotos.map(function(p) {
+    return compressImage(p.dataUrl, 800);
+  })).then(function(compressed) {
+    var imgs = compressed.map(function(dataUrl) {
+      return { type: 'image', source: { type: 'base64', media_type: 'image/jpeg', data: dataUrl.split(',')[1] } };
+    });
+
+  var prompt = 'Expert inspection bâtiment POLARIX DRONE. Analyse ces ' + photos.length + ' photo(s).\n' +
+    'Mission: ' + mission.ref + ' | ' + mission.imm + ' | ' + mission.adr + ' | ' + mission.surf + 'm²\n' +
+    'Catégories photos: ' + photos.map(function(p) { return p.cat; }).join(', ') + '\n' +
+    'IMPORTANT: Reponds UNIQUEMENT avec du JSON valide. Aucun texte avant ou apres. Pas de markdown. Pas d apostrophe dans les valeurs (utilise des formulations sans apostrophe).\n' +
+    'Format exact:\n' +
+    '{"visio_index":58,"niveau_vigilance":"Vigilance elevee","synthese_courte":"Description sans apostrophe.","points_cles":["Point 1","Point 2","Point 3","Point 4"],' +
+    '"scores":{"etancheite":52,"securite":61,"facades":68,"eaux_pluviales":49,"maintenance":58},' +
+    '"anomalies":[{"id":"A1","zone":"Toiture","titre":"Titre court","criticite":"Critique","urgence":"1 mois","constat":"Description visuelle sans apostrophe","risque":"Risque principal","action":"Action recommandee","photo_index":0}],' +
+    '"budget":{"toiture":{"min":2000,"max":5000},"ep":{"min":500,"max":1500},"facades":{"min":1000,"max":3000},"securite":{"min":800,"max":2000}},' +
+    '"budget_total_min":4300,"budget_total_max":11500}\n' +
+    'Min 3 anomalies max 10. CRITIQUE: pas d apostrophe, pas de caracteres speciaux dans les valeurs JSON.';
+
+    return fetch('/api/analyze', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-5',
+      max_tokens: 2500,
+      messages: [{ role: 'user', content: imgs.concat([{ type: 'text', text: prompt }]) }]
+    })
+    }).then(function(res) {
+    if (!res.ok) return res.json().then(function(e) { throw new Error(e.error ? e.error.message : 'API ' + res.status); });
+    return res.json();
+  }).then(function(d) {
+    var txt = '';
+    d.content.forEach(function(b) { if (b.type === 'text') txt += b.text; });
+    txt = txt.replace(/```json|```/g, '').trim();
+    // Extract JSON object robustly
+    var start = txt.indexOf('{');
+    var end = txt.lastIndexOf('}');
+    if (start !== -1 && end !== -1) {
+      txt = txt.substring(start, end + 1);
+    }
+    try {
+      return JSON.parse(txt);
+    } catch(e) {
+      // Try to sanitize common issues: unescaped apostrophes inside strings
+      try {
+        // Remove control characters
+        var clean = txt.replace(/[\x00-\x1F\x7F]/g, ' ');
+        return JSON.parse(clean);
+      } catch(e2) {
+        throw new Error('JSON invalide: ' + e2.message + ' — Relancez la génération.');
+      }
+    }
+  });
+}
+
+// ═══════════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════════
+function sc(v) { return v >= 80 ? '#2B8A4E' : v >= 60 ? '#E8821A' : '#D44C4C'; }
+function fmt(n) { return Math.round(n).toLocaleString('fr'); }
+var cmap = { 'Critique':'bc', 'Élevée':'be', 'Moyenne':'bm', 'Faible':'bf' };
+
+function buildArc(score, size) {
+  size = size || 120;
+  var cx = size/2, cy = size/2, r = size*0.42, sw = size*0.09;
+  var col = sc(score);
+  var s1 = -210*Math.PI/180, e1 = 30*Math.PI/180;
+  var bx1 = cx+r*Math.cos(s1), by1 = cy+r*Math.sin(s1);
+  var bx2 = cx+r*Math.cos(e1), by2 = cy+r*Math.sin(e1);
+  var bgPath = 'M '+bx1+' '+by1+' A '+r+' '+r+' 0 1 1 '+bx2+' '+by2;
+  var fDeg = -210 + (score/100)*240;
+  var fe = fDeg*Math.PI/180;
+  var fx2 = cx+r*Math.cos(fe), fy2 = cy+r*Math.sin(fe);
+  var lg = (score/100)*240 > 180 ? 1 : 0;
+  var fillPath = score > 0 ? 'M '+bx1+' '+by1+' A '+r+' '+r+' 0 '+lg+' 1 '+fx2+' '+fy2 : '';
+  return '<svg width="'+size+'" height="'+size+'" viewBox="0 0 '+size+' '+size+'">' +
+    '<path d="'+bgPath+'" fill="none" stroke="#ECEAE5" stroke-width="'+sw+'" stroke-linecap="round"/>' +
+    (fillPath ? '<path d="'+fillPath+'" fill="none" stroke="'+col+'" stroke-width="'+sw+'" stroke-linecap="round"/>' : '') +
+    '</svg>';
+}
+
+function buildDonut(b, size) {
+  size = size || 100;
+  var entries = [
+    { c:'#D44C4C', v:b.securite.max }, { c:'#E8821A', v:b.toiture.max },
+    { c:'#C9941A', v:b.facades.max }, { c:'#2B8A4E', v:b.ep.max },
+    { c:'#9E9B93', v:Math.round((b.securite.max+b.toiture.max+b.facades.max+b.ep.max)*0.05) }
+  ];
+  var total = entries.reduce(function(s,e) { return s+e.v; }, 0);
+  if (!total) return '';
+  var r = size*0.36, cx = size/2, cy = size/2, sw = size*0.14, off = -90;
+  var arcs = entries.map(function(e) {
+    var ang = (e.v/total)*360;
+    if (ang < 1) return '';
+    var r1 = off*Math.PI/180, r2 = (off+ang-0.5)*Math.PI/180;
+    var x1 = cx+r*Math.cos(r1), y1 = cy+r*Math.sin(r1);
+    var x2 = cx+r*Math.cos(r2), y2 = cy+r*Math.sin(r2);
+    var lg = ang > 180 ? 1 : 0;
+    off += ang;
+    return '<path d="M '+x1+' '+y1+' A '+r+' '+r+' 0 '+lg+' 1 '+x2+' '+y2+'" fill="none" stroke="'+e.c+'" stroke-width="'+sw+'" stroke-linecap="butt"/>';
+  }).join('');
+  return '<svg width="'+size+'" height="'+size+'" viewBox="0 0 '+size+' '+size+'">'+arcs+'</svg>';
+}
+
+// ═══════════════════════════════════════════
+// RENDER ALL
+// ═══════════════════════════════════════════
+function renderAll(d) {
+  document.getElementById('tb-imm').textContent = mission.imm;
+  document.getElementById('tb-adr').textContent = mission.adr;
+  document.getElementById('tb-ref').textContent = mission.ref;
+  document.getElementById('tb-date').textContent = mission.date ? new Date(mission.date).toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'}) : '—';
+  renderDash(d);
+  renderSyn(d);
+  renderSc(d);
+  renderCarto(d);
+  renderAnom(d);
+  renderPlan(d);
+  renderBud(d);
+  renderAnx();
+  goTo('dash', document.getElementById('n-dash'));
+}
+
+// ── DASHBOARD ──
+function renderDash(d) {
+  document.getElementById('db-empty').style.display = 'none';
+  document.getElementById('db-main').style.display = 'block';
+  var s = d.scores, b = d.budget;
+  var top5 = d.anomalies.slice(0,5);
+  var marge = Math.round(d.budget_total_max * 0.04);
+  var totK = Math.round((d.budget_total_min+d.budget_total_max)/2/1000);
+
+  var scIcons = [
+    ['M 12 3 q 0 0 0 0 M8 12a4 4 0 018 0','Étanchéité',s.etancheite],
+    ['M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z','Sécurité',s.securite],
+    ['M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75','Façades',s.facades],
+    ['M2.25 15a4.5 4.5 0 004.5 4.5H18a3.75 3.75 0 001.332-7.257 3 3 0 00-3.758-3.848 5.25 5.25 0 00-10.233 2.33A4.502 4.502 0 002.25 15z','Eaux pluviales',s.eaux_pluviales],
+    ['M11.42 15.17L17.25 21A2.652 2.652 0 0021 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 11-3.586-3.586l6.837-5.63','Maintenance',s.maintenance]
+  ];
+
+  var hzData = [
+    ['r','var(--red)','var(--rbg)','M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z','0 – 3 MOIS','ÉLEVÉ','Risque d\'infiltration actif et chute d\'éléments'],
+    ['o','var(--orange)','var(--obg)','M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5','3 – 6 MOIS','MOYEN','Aggravation des dégradations de façade et EP'],
+    ['a','var(--amber)','var(--abg)','M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25','6 – 12 MOIS','MOYEN','Hausse du coût des travaux et dégradation structurelle']
+  ];
+
+  document.getElementById('r1').innerHTML =
+    '<div class="card">' +
+      '<div class="chd">Visio Index™</div><div class="chd2">Niveau de vigilance global</div>' +
+      '<div class="idx-arc"><div style="position:absolute;top:0;left:0;width:120px;height:120px">' + buildArc(d.visio_index) + '</div></div>' +
+      '<div class="idx-num" style="color:'+sc(d.visio_index)+'">' + d.visio_index + '<span class="idx-d">/100</span></div>' +
+      '<div class="idx-lv" style="color:'+sc(d.visio_index)+'">' + d.niveau_vigilance + '</div>' +
+      '<div class="idx-desc">' + d.synthese_courte + '</div>' +
+    '</div>' +
+    '<div class="card"><div class="chd">Visio Score™ par axe</div>' +
+      '<div class="scgrid">' +
+      scIcons.map(function(x) {
+        return '<div><div class="sc-iw"><svg fill="none" stroke="'+sc(x[2])+'" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="'+x[0]+'"/></svg></div>' +
+          '<div class="sc-lbl">' + x[1] + '</div>' +
+          '<div class="sc-v" style="color:'+sc(x[2])+'">'+x[2]+'</div>' +
+          '<div class="sc-s">/100</div>' +
+          '<div class="sc-bar-bg"><div class="sc-bar" style="width:'+x[2]+'%;background:'+sc(x[2])+'"></div></div></div>';
+      }).join('') +
+      '</div></div>' +
+    '<div class="card"><div class="chd">Top 5 des risques prioritaires</div>' +
+      top5.map(function(a,i) {
+        return '<div class="t5"><div class="t5-n">' + String(i+1).padStart(2,'0') + '</div>' +
+          '<div><div class="t5-nm">' + a.titre + '</div><div class="t5-loc">' + a.zone + '</div></div>' +
+          '<button class="badge ' + (cmap[a.criticite]||'bf') + '" onclick="goTo(\'anom\',document.getElementById(\'n-anom\'))">' + a.criticite.toUpperCase() + '</button></div>';
+      }).join('') +
+    '</div>' +
+    '<div class="card"><div class="chd">Horizon de risque</div><div class="chd2">Projection dans le temps</div>' +
+      hzData.map(function(h) {
+        return '<div class="hz"><div class="hz-ic" style="background:'+h[2]+'"><svg fill="none" stroke="'+h[1]+'" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="'+h[3]+'"/></svg></div>' +
+          '<div><div class="hz-per" style="color:'+h[1]+'">'+h[4]+'</div>' +
+          '<div class="hz-rl"><span class="hz-rlbl">Risque</span><span class="hz-rv" style="color:'+h[1]+'">'+h[5]+'</span></div>' +
+          '<div class="hz-desc">'+h[6]+'</div></div></div>';
+      }).join('') +
+    '</div>';
+
+  var mapPh = photos.find(function(p) { return p.cat === 'toiture'; }) || photos[0];
+  var dlLegend = [['#D44C4C','Sécurisation urgences',b.securite.max],['#E8821A','Étanchéité toiture',b.toiture.max],['#C9941A','Façades',b.facades.max],['#2B8A4E','Eaux pluviales',b.ep.max],['#9E9B93','Divers / imprévus',marge]];
+
+  document.getElementById('r2').innerHTML =
+    '<div class="card">' +
+      '<div class="chd">Visio Map™ — Cartographie des zones à enjeux</div>' +
+      '<div class="map-box" id="mapbox">' +
+        (mapPh ? '<img src="'+mapPh.dataUrl+'" id="mapimg" alt="carte">' : '<div class="map-ph"><svg width="28" height="28" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg><p>Photo aérienne<br>à importer</p></div>') +
+        '<div id="map-ml" style="position:absolute;inset:0;pointer-events:none"></div>' +
+      '</div>' +
+      '<div class="map-leg">' +
+        '<div class="ml-i"><div class="ml-d" style="background:#D44C4C"></div>Risque critique</div>' +
+        '<div class="ml-i"><div class="ml-d" style="background:#E8821A"></div>Risque élevé</div>' +
+        '<div class="ml-i"><div class="ml-d" style="background:#C9941A"></div>Risque moyen</div>' +
+        '<div class="ml-i"><div class="ml-d" style="background:#2B8A4E"></div>Risque faible</div>' +
+        '<button class="ml-lnk" onclick="goTo(\'carto\',document.getElementById(\'n-carto\'))">👁 Voir la légende</button>' +
+      '</div>' +
+    '</div>' +
+    '<div class="card"><div class="chd">Synthèse décisionnelle</div>' +
+      (d.points_cles||[]).map(function(p) {
+        return '<div class="sy-i"><div class="sy-ck"><svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></div><span>' + p + '</span></div>';
+      }).join('') +
+      '<div class="sy-cta">Un plan d\'action priorisé est recommandé pour prévenir les infiltrations et sécuriser les parties communes.</div>' +
+    '</div>' +
+    '<div class="card"><div class="chd">Enveloppe budgétaire indicative</div><div class="chd2">Estimation globale des travaux</div>' +
+      '<div class="donut-wrap">' +
+        '<div class="donut-pos">' + buildDonut(b) +
+          '<div class="donut-ctr"><div class="donut-tot">' + totK + 'K€</div><div class="donut-lbl">Estimation<br>globale</div></div>' +
+        '</div>' +
+        '<div style="flex:1">' +
+          dlLegend.map(function(x) {
+            return '<div class="dl-r"><div class="dl-l"><div class="dl-d" style="background:'+x[0]+'"></div><span>' + x[1] + '</span></div><div class="dl-v">' + fmt(x[2]) + ' €</div></div>';
+          }).join('') +
+          '<div class="dl-note">Estimation à affiner après diagnostics<br>de proximité et devis entreprises.</div>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+
+  // Map click handler
+  setTimeout(function() {
+    var img = document.getElementById('mapimg');
+    if (img) img.addEventListener('click', function(e) { addMapMarker(e, img, 'map-ml', d); });
+  }, 100);
+
+  // ROW 3
+  var mini5 = d.anomalies.slice(0,5);
+  var byH = function(keys) { return d.anomalies.filter(function(a) { return keys.some(function(k) { return a.urgence && a.urgence.includes(k); }); }); };
+  var pU = byH(['1 mois','3 mois']), pP = byH(['3–6','6 mois']), pS = byH(['6–12','12 mois']);
+
+  var miniHtml = mini5.map(function(a,i) {
+    var p = photos[a.photo_index];
+    return '<div class="am">' +
+      (p ? '<img src="'+p.dataUrl+'" alt="'+a.titre+'">' : '<div class="am-ph">🔍</div>') +
+      '<div class="am-body">' +
+        '<div class="am-num">0'+(i+1)+' '+a.titre.substring(0,16).toUpperCase()+'</div>' +
+        '<div class="am-r"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg><span>'+((a.risque||'').substring(0,24))+'</span></div>' +
+        '<div class="am-r"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" d="M12 7v5l3 3"/></svg><span>'+a.urgence+'</span></div>' +
+      '</div></div>';
+  }).join('');
+
+  var planHtml = '<div class="plan-box"><div class="plan-in">' +
+    '<div class="plan-hds">' +
+      '<div class="phd phd-u">0–3 mois<span>URGENT</span></div>' +
+      '<div class="phd phd-p">3–6 mois<span>PRIORITAIRE</span></div>' +
+      '<div class="phd phd-s">6–12 mois<span>PRÉVENTIF</span></div>' +
+    '</div>' +
+    '<div class="plan-cols">' +
+      '<div>' + (pU.map(function(a) { return '<div class="pi"><input type="checkbox"><span>'+a.action+'</span></div>'; }).join('') || '<div style="font-size:8.5px;color:var(--g4);font-style:italic;padding:3px 0">Aucune</div>') + '</div>' +
+      '<div>' + (pP.map(function(a) { return '<div class="pi"><input type="checkbox"><span>'+a.action+'</span></div>'; }).join('') || '<div style="font-size:8.5px;color:var(--g4);font-style:italic;padding:3px 0">Aucune</div>') + '</div>' +
+      '<div>' + (pS.map(function(a) { return '<div class="pi"><input type="checkbox"><span>'+a.action+'</span></div>'; }).join('') || '<div style="font-size:8.5px;color:var(--g4);font-style:italic;padding:3px 0">Aucune</div>') + '</div>' +
+    '</div>' +
+    '<div class="plan-bdgs">' +
+      '<div class="pb"><div class="pb-l">Budget estimé</div><div class="pb-v pbu">'+fmt(b.securite.max)+' €</div></div>' +
+      '<div class="pb"><div class="pb-l">Budget estimé</div><div class="pb-v pbp">'+fmt((b.toiture.max+b.facades.max)/2)+' €</div></div>' +
+      '<div class="pb"><div class="pb-l">Budget estimé</div><div class="pb-v pbs">'+fmt(b.ep.max)+' €</div></div>' +
+    '</div>' +
+  '</div></div>';
+
+  document.getElementById('r3').innerHTML = miniHtml + planHtml;
+}
+
+// ── MAP MARKER ──
+function addMapMarker(e, img, layerId, d) {
+  var rect = img.getBoundingClientRect();
+  var x = ((e.clientX - rect.left) / rect.width * 100).toFixed(1);
+  var y = ((e.clientY - rect.top) / rect.height * 100).toFixed(1);
+  mapCount++;
+  var layer = document.getElementById(layerId);
+  layer.style.pointerEvents = 'auto';
+  var a = d ? d.anomalies[mapCount-1] : null;
+  var col = a ? (a.criticite==='Critique'?'#D44C4C':a.criticite==='Élevée'?'#E8821A':'#C9941A') : '#C9941A';
+  var mm = document.createElement('div');
+  mm.style.cssText = 'position:absolute;left:'+x+'%;top:'+y+'%;transform:translate(-50%,-50%);pointer-events:auto;cursor:pointer';
+  mm.innerHTML = '<div style="width:22px;height:22px;border-radius:50%;background:'+col+';color:#fff;display:flex;align-items:center;justify-content:center;font-size:8.5px;font-weight:700;border:2px solid rgba(255,255,255,.5);box-shadow:0 2px 6px rgba(0,0,0,.3)">'+String(mapCount).padStart(2,'0')+'</div>';
+  mm.title = (a ? a.titre : 'Zone') + ' — clic droit pour supprimer';
+  mm.addEventListener('contextmenu', function(e2) { e2.preventDefault(); mm.remove(); });
+  layer.appendChild(mm);
+}
+
+// ── SYNTHESE ──
+function renderSyn(d) {
+  var s = d.scores;
+  document.getElementById('syn-in').innerHTML =
+    '<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:12px">' +
+    [['Étanchéité',s.etancheite],['Sécurité',s.securite],['Façades',s.facades],['Eaux pluviales',s.eaux_pluviales],['Maintenance',s.maintenance]].map(function(x) {
+      return '<div class="sfc"><div class="sfc-hd"><div class="sfc-t">'+x[0]+'</div><div class="sfc-s" style="color:'+sc(x[1])+'">'+x[1]+'</div></div>' +
+        '<div class="sfc-bb"><div class="sfc-b" style="width:'+x[1]+'%;background:'+sc(x[1])+'"></div></div>' +
+        '<span class="sfc-tag" style="background:'+sc(x[1])+'18;color:'+sc(x[1])+'">' + (x[1]>=80?'✓ Satisfaisant':x[1]>=60?'⚠ Vigilance':'✗ Prioritaire') + '</span></div>';
+    }).join('') + '</div>' +
+    '<div style="display:grid;grid-template-columns:2fr 1fr;gap:10px">' +
+      '<div class="card"><div class="chd">Points clés</div>' +
+        (d.points_cles||[]).map(function(p) { return '<div class="sy-i"><div class="sy-ck"><svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></div><span style="font-size:10.5px">'+p+'</span></div>'; }).join('') +
+        '<p style="font-size:10.5px;color:var(--g5);line-height:1.6;margin-top:8px">'+d.synthese_courte+'</p></div>' +
+      '<div class="card" style="text-align:center"><div class="chd">Visio Index™</div>' +
+        '<div style="font-size:50px;font-weight:300;color:'+sc(d.visio_index)+';font-family:var(--m);line-height:1;margin:8px 0">'+d.visio_index+'<span style="font-size:15px;color:var(--g4)">/100</span></div>' +
+        '<div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:'+sc(d.visio_index)+'">'+d.niveau_vigilance+'</div></div>' +
+    '</div>';
+}
+
+// ── SCORES ──
+function renderSc(d) {
+  var descs = { etancheite:'Noues, terrasses, solins, points singuliers.', securite:'Garde-corps, corniches, fixations, saillies.', facades:'Enduits, fissures, joints, appuis de fenêtres.', eaux_pluviales:'Chéneaux, descentes EP, boîtes à eau.', maintenance:'État général de maintenance préventive.' };
+  document.getElementById('sc-in').innerHTML = '<div class="sc-full">' +
+    [['Étanchéité','etancheite'],['Sécurité','securite'],['Façades','facades'],['Eaux pluviales','eaux_pluviales'],['Maintenance','maintenance']].map(function(x) {
+      var v = d.scores[x[1]], col = sc(v);
+      return '<div class="sfc"><div class="sfc-hd"><div class="sfc-t">'+x[0]+'</div><div class="sfc-s" style="color:'+col+'">'+v+'</div></div>' +
+        '<div class="sfc-bb"><div class="sfc-b" style="width:'+v+'%;background:'+col+'"></div></div>' +
+        '<div class="sfc-d">'+descs[x[1]]+'</div>' +
+        '<span class="sfc-tag" style="background:'+col+'18;color:'+col+'">'+(v>=80?'✓ Satisfaisant':v>=60?'⚠ Vigilance':'✗ Prioritaire')+'</span></div>';
+    }).join('') + '</div>';
+}
+
+// ── CARTOGRAPHIE ──
+function renderCarto(d) {
+  var mp = photos.find(function(p) { return p.cat === 'toiture'; }) || photos[0];
+  var cartoCount = 0;
+  document.getElementById('carto-in').innerHTML =
+    '<div style="display:grid;grid-template-columns:2fr 1fr;gap:12px">' +
+      '<div><div class="card" style="margin-bottom:8px"><div class="chd">Photo aérienne — Cliquez pour placer des marqueurs</div>' +
+        '<div style="position:relative;border-radius:6px;overflow:hidden">' +
+          (mp ? '<img src="'+mp.dataUrl+'" id="carto-img" style="width:100%;display:block;border-radius:6px;cursor:crosshair">' : '<div class="map-ph" style="aspect-ratio:16/9"><p>Importez une photo aérienne</p></div>') +
+          '<div id="carto-ml" style="position:absolute;inset:0;pointer-events:none"></div>' +
+        '</div>' +
+        '<div style="margin-top:7px;font-size:9.5px;color:var(--g4);background:var(--g1);border-radius:5px;padding:7px 9px">Cliquez sur la photo pour poser un marqueur. Clic droit pour supprimer. GPS via EXIF disponible en V2.</div>' +
+      '</div></div>' +
+      '<div class="card"><div class="chd">Zones identifiées ('+d.anomalies.length+')</div>' +
+        d.anomalies.slice(0,8).map(function(a,i) {
+          var col = a.criticite==='Critique'?'#D44C4C':a.criticite==='Élevée'?'#E8821A':a.criticite==='Moyenne'?'#C9941A':'#2B8A4E';
+          return '<div style="display:flex;align-items:center;gap:7px;padding:5px 0;border-bottom:1px solid var(--g2)">' +
+            '<div style="width:20px;height:20px;border-radius:50%;background:'+col+';color:#fff;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;flex-shrink:0">'+String(i+1).padStart(2,'0')+'</div>' +
+            '<div style="flex:1;min-width:0"><div style="font-size:10.5px;font-weight:600">'+a.titre+'</div><div style="font-size:9px;color:var(--g4)">'+a.zone+' — '+a.urgence+'</div></div>' +
+            '<span class="badge '+(cmap[a.criticite]||'bf')+'">'+a.criticite.toUpperCase()+'</span></div>';
+        }).join('') +
+      '</div>' +
+    '</div>';
+  setTimeout(function() {
+    var img = document.getElementById('carto-img');
+    if (img) img.addEventListener('click', function(e) {
+      cartoCount++;
+      var rect = img.getBoundingClientRect();
+      var x = ((e.clientX-rect.left)/img.offsetWidth*100).toFixed(1);
+      var y = ((e.clientY-rect.top)/img.offsetHeight*100).toFixed(1);
+      var a = d.anomalies[cartoCount-1];
+      var col = a ? (a.criticite==='Critique'?'#D44C4C':a.criticite==='Élevée'?'#E8821A':'#C9941A') : '#C9941A';
+      var layer = document.getElementById('carto-ml');
+      layer.style.pointerEvents = 'auto';
+      var mm = document.createElement('div');
+      mm.style.cssText = 'position:absolute;left:'+x+'%;top:'+y+'%;transform:translate(-50%,-50%);pointer-events:auto;cursor:pointer';
+      mm.innerHTML = '<div style="width:22px;height:22px;border-radius:50%;background:'+col+';color:#fff;display:flex;align-items:center;justify-content:center;font-size:8.5px;font-weight:700;border:2px solid rgba(255,255,255,.5)">'+String(cartoCount).padStart(2,'0')+'</div>';
+      mm.addEventListener('contextmenu', function(e2) { e2.preventDefault(); mm.remove(); });
+      layer.appendChild(mm);
+    });
+  }, 100);
+}
+
+// ── ANOMALIES ──
+function renderAnom(d) {
+  document.getElementById('anom-in').innerHTML = '<div class="af-grid">' +
+    d.anomalies.map(function(a) {
+      var p = photos[a.photo_index];
+      var bord = a.criticite==='Critique'?'#D44C4C':a.criticite==='Élevée'?'#E8821A':a.criticite==='Moyenne'?'#C9941A':'#2B8A4E';
+      return '<div class="afc" style="border-left:3px solid '+bord+'">' +
+        (p ? '<img class="afc-ph" src="'+p.dataUrl+'" alt="'+a.titre+'">' : '<div class="afc-ph-e">🔍</div>') +
+        '<div class="afc-body"><div class="afc-top"><span class="afc-id">'+a.id+' — '+a.zone+'</span><span class="badge '+(cmap[a.criticite]||'bf')+'">'+a.criticite.toUpperCase()+'</span></div>' +
+        '<div class="afc-t">'+a.titre+'</div><div class="afc-d">'+a.constat+'</div>' +
+        '<div class="afc-ft"><span class="afc-u">⏱ '+a.urgence+'</span><span class="afc-a">'+a.action+'</span></div>' +
+        '</div></div>';
+    }).join('') + '</div>';
+}
+
+// ── PLAN ──
+function renderPlan(d) {
+  var byH = function(keys) { return d.anomalies.filter(function(a) { return keys.some(function(k) { return a.urgence && a.urgence.includes(k); }); }); };
+  var pU = byH(['1 mois','3 mois']), pP = byH(['3–6','6 mois']), pS = byH(['6–12','12 mois']);
+  var b = d.budget;
+  var planCol = function(items, col, budget) {
+    return '<div class="pfc"><div class="pfc-hd" style="border-color:'+col+';color:'+col+'">Actions<span class="pfc-per">'+budget+'</span></div>' +
+      (items.map(function(a) { return '<div class="pfc-i"><input type="checkbox"><div><div style="font-weight:500">'+a.action+'</div><div style="font-size:8.5px;color:var(--g4);margin-top:1px">'+a.zone+' — '+a.id+'</div></div></div>'; }).join('') || '<div style="font-size:9.5px;color:var(--g4);font-style:italic;padding:6px 0">Aucune action</div>') +
+      '</div>';
+  };
+  document.getElementById('plan-in').innerHTML = '<div class="pf-grid">' +
+    planCol(pU,'var(--red)','0–3 mois') +
+    planCol(pP,'var(--orange)','3–6 mois') +
+    planCol(pS,'var(--green)','6–12 mois') +
+    '</div>';
+}
+
+// ── BUDGET ──
+function renderBud(d) {
+  var mg = { min: Math.round(d.budget_total_min*.1), max: Math.round(d.budget_total_max*.1) };
+  var b = d.budget;
+  var lots = [['Lot 1 — Toiture',b.toiture,'#E8821A'],['Lot 2 — EP',b.ep,'#2B8A4E'],['Lot 3 — Façades',b.facades,'#C9941A'],['Lot 4 — Sécurité',b.securite,'#D44C4C'],['Marge imprévus 10%',mg,'#9E9B93']];
+  var maxV = Math.max.apply(null, lots.map(function(l) { return l[1].max; }));
+  document.getElementById('bud-in').innerHTML = '<div class="bf-grid">' +
+    '<div class="card"><table class="bt"><thead><tr><th>Lot</th><th>Fourchette</th><th>Part</th></tr></thead><tbody>' +
+    lots.map(function(l) {
+      return '<tr><td style="display:flex;align-items:center;gap:7px"><div style="width:7px;height:7px;border-radius:1px;background:'+l[2]+';flex-shrink:0"></div>'+l[0]+'</td>' +
+        '<td class="b-range">'+fmt(l[1].min)+' – '+fmt(l[1].max)+' €</td>' +
+        '<td><div class="b-bar-bg"><div class="b-bar" style="width:'+Math.round(l[1].max/maxV*100)+'%;background:'+l[2]+'"></div></div></td></tr>';
+    }).join('') +
+    '<tr class="tot"><td colspan="2">Total estimatif (avec marge)</td><td style="font-family:var(--m);color:var(--orange);font-size:12px">'+fmt(d.budget_total_min+mg.min)+' – '+fmt(d.budget_total_max+mg.max)+' €</td></tr>' +
+    '</tbody></table><div style="padding:8px 11px;font-size:9px;color:var(--g4);border-top:1px solid var(--g2)">Fourchettes indicatives. À confirmer par devis et contrôle de proximité.</div></div>' +
+    '<div>' +
+      '<div class="card" style="margin-bottom:10px"><div class="chd">Répartition</div>' +
+        '<div style="display:flex;justify-content:center;position:relative;margin:8px 0">' + buildDonut(b, 110) +
+          '<div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none"><div style="font-size:17px;font-weight:700;font-family:var(--m)">'+Math.round((d.budget_total_min+d.budget_total_max)/2/1000)+'K€</div><div style="font-size:7.5px;text-transform:uppercase;letter-spacing:.07em;color:var(--g4)">moy. estimée</div></div>' +
+        '</div>' +
+        lots.slice(0,4).map(function(l) { return '<div class="dl-r"><div class="dl-l"><div class="dl-d" style="background:'+l[2]+'"></div>'+l[0].replace(/Lot \d — /,'')+'</div><div class="dl-v">'+fmt(Math.round((l[1].min+l[1].max)/2))+'€</div></div>'; }).join('') +
+      '</div>' +
+      '<div class="card"><div style="font-size:9.5px;color:var(--g5);line-height:1.6">Montants issus d\'une inspection visuelle non destructive. Validation par devis et contrôle de proximité obligatoire.</div></div>' +
+    '</div>' +
+  '</div>';
+}
+
+// ── ANNEXES ──
+function renderAnx() {
+  if (!photos.length) return;
+  document.getElementById('anx-in').innerHTML = '<div class="anx-grid">' +
+    photos.map(function(p,i) {
+      return '<div class="anx"><img src="'+p.dataUrl+'" alt="'+p.name+'"><div class="anx-info"><div class="anx-id">'+p.cat.toUpperCase()+'-'+String(i+1).padStart(2,'0')+'</div><div class="anx-t">'+p.name.replace(/\.[^.]+$/,'')+'</div></div></div>';
+    }).join('') + '</div>';
+}
+</script>
+</body>
+</html>
