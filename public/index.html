@@ -778,7 +778,7 @@ async function generate() {
 
     setP(75, 'Consolidation du rapport…');
 
-var data = await consolidateReport(photoAnalyses);
+    var data = await consolidateReport(photoAnalyses);
     
     setP(90, 'Structuration du rapport…');
     addLog('Anomalies : ' + data.anomalies.length, 'ok');
