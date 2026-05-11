@@ -1022,7 +1022,7 @@ function renderStoredMarkers(layerId, d) {
   if (!layer || !d || !d._mapMarkers) return;
 
   layer.innerHTML = '';
-  layer.style.pointerEvents = 'auto';
+  layer.style.pointerEvents = 'none';
 
   d._mapMarkers.forEach(function(m, i) {
     var a = d.anomalies[m.index] || d.anomalies[i];
