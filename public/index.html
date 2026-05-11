@@ -884,7 +884,22 @@ async function analyzeSinglePhoto(photo, index) {
     txt = txt.substring(start, end + 1);
   }
 
-  var parsed = JSON.parse(txt);
+    var parsed;
+
+  try {
+    parsed = JSON.parse(txt);
+  } catch(e) {
+    console.error('JSON photo invalide pour ' + photo.name + ':', txt);
+
+    parsed = {
+      photo_index: index,
+      photo_name: photo.name,
+      zone: photo.cat || 'Zone inspectee',
+      summary: 'Analyse IA non exploitable sur cette image.',
+      anomalies: []
+    };
+  }
+
   parsed.photo_index = index;
   parsed.photo_name = photo.name;
 
