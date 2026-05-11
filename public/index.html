@@ -1103,7 +1103,7 @@ function renderDash(d) {
     '</div>';
 
   var mapPh = photos.find(function(p) {
-  return p.name && p.name.toLowerCase() === 'map.jpg';
+  return p.name && p.name.toLowerCase().startsWith('map.');
 });
   var dlLegend = [['#D44C4C','Sécurisation urgences',b.securite.max],['#E8821A','Étanchéité toiture',b.toiture.max],['#C9941A','Façades',b.facades.max],['#2B8A4E','Eaux pluviales',b.ep.max],['#9E9B93','Divers / imprévus',marge]];
 
@@ -1242,7 +1242,7 @@ function renderCarto(d) {
   var sentPhotos = d._sentPhotos || photos;
 
 var mp = sentPhotos.find(function(p) {
-  return p.name && p.name.toLowerCase() === 'map.jpg';
+  return p.name && p.name.toLowerCase().startsWith('map.');
 });
 
   document.getElementById('carto-in').innerHTML =
