@@ -1102,7 +1102,9 @@ function renderDash(d) {
       }).join('') +
     '</div>';
 
-  var mapPh = photos.find(function(p) { return /^map\./.test(p.name.toLowerCase()); }) || photos.find(function(p) { return p.cat === 'toiture'; }) || photos[0];
+  var mapPh = photos.find(function(p) {
+  return p.name && p.name.toLowerCase() === 'map.jpg';
+});
   var dlLegend = [['#D44C4C','Sécurisation urgences',b.securite.max],['#E8821A','Étanchéité toiture',b.toiture.max],['#C9941A','Façades',b.facades.max],['#2B8A4E','Eaux pluviales',b.ep.max],['#9E9B93','Divers / imprévus',marge]];
 
   document.getElementById('r2').innerHTML =
