@@ -1100,9 +1100,18 @@ function loadMission(id) {
       ref: m.ref, imm: m.immeuble, adr: m.adresse,
       syn: m.syndic, surf: m.surface, date: m.date
     };
-    report = m.report;
+   report = m.report;
     photos = m.photos || [];
-    renderAll(m.report);
+
+    report._mapPhoto = photos.find(function(p) {
+      return p.name && p.name.toLowerCase().startsWith('map.');
+    });
+
+    report._sentPhotos = photos.filter(function(p) {
+      return !(p.name && p.name.toLowerCase().startsWith('map.'));
+    });
+
+renderAll(report);
     document.getElementById('save-bar').style.display = 'none';
   }).catch(function(e) {
     alert('Erreur: ' + e.message);
