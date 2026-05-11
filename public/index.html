@@ -1238,19 +1238,25 @@ function renderSc(d) {
 // ── CARTOGRAPHIE ──
 function renderCarto(d) {
   var sentPhotos = d._sentPhotos || photos;
-  var mp = sentPhotos.find(function(p) { return p.cat === 'toiture'; }) || sentPhotos[0];
-  var cartoCount = 0;
+
+  // Même logique que le tableau de bord : map.jpg d'abord
+  var mp = sentPhotos.find(function(p) {
+    return /^map\./.test(p.name.toLowerCase());
+  }) || sentPhotos.find(function(p) {
+    return p.cat === 'toiture';
+  }) || sentPhotos[0];
+
   document.getElementById('carto-in').innerHTML =
     '<div style="display:grid;grid-template-columns:2fr 1fr;gap:12px">' +
-      '<div><div class="card" style="margin-bottom:8px"><div class="chd">Photo aérienne — Cliquez pour placer des marqueurs</div>' +
+      '<div><div class="card" style="margin-bottom:8px"><div class="chd">Photo aérienne — Cliquez pour placer les marqueurs</div>' +
         '<div style="position:relative;border-radius:6px;overflow:hidden">' +
-          (mp ? '<img src="'+mp.dataUrl+'" id="carto-img" style="width:100%;display:block;border-radius:6px;cursor:crosshair">' : '<div class="map-ph" style="aspect-ratio:16/9"><p>Importez une photo aérienne</p></div>') +
+          (mp ? '<img src="'+mp.dataUrl+'" id="carto-img" style="width:100%;display:block;border-radius:6px;cursor:crosshair">' : '<div class="map-ph" style="aspect-ratio:16/9"><p>Importez une photo map.jpg</p></div>') +
           '<div id="carto-ml" style="position:absolute;inset:0;pointer-events:none"></div>' +
         '</div>' +
-        '<div style="margin-top:7px;font-size:9.5px;color:var(--g4);background:var(--g1);border-radius:5px;padding:7px 9px">Cliquez sur la photo pour poser un marqueur. Clic droit pour supprimer. GPS via EXIF disponible en V2.</div>' +
+        '<div style="margin-top:7px;font-size:9.5px;color:var(--g4);background:var(--g1);border-radius:5px;padding:7px 9px">Cliquez sur la photo pour placer chaque anomalie. Clic droit sur un marqueur pour le supprimer.</div>' +
       '</div></div>' +
       '<div class="card"><div class="chd">Zones identifiées ('+d.anomalies.length+')</div>' +
-        d.anomalies.slice(0,8).map(function(a,i) {
+        d.anomalies.map(function(a,i) {
           var col = a.criticite==='Critique'?'#D44C4C':a.criticite==='Élevée'?'#E8821A':a.criticite==='Moyenne'?'#C9941A':'#2B8A4E';
           return '<div style="display:flex;align-items:center;gap:7px;padding:5px 0;border-bottom:1px solid var(--g2)">' +
             '<div style="width:20px;height:20px;border-radius:50%;background:'+col+';color:#fff;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;flex-shrink:0">'+String(i+1).padStart(2,'0')+'</div>' +
@@ -1259,22 +1265,40 @@ function renderCarto(d) {
         }).join('') +
       '</div>' +
     '</div>';
+
   setTimeout(function() {
     var img = document.getElementById('carto-img');
-    if (img) img.addEventListener('click', function(e) {
-      cartoCount++;
+    var layer = document.getElementById('carto-ml');
+    if (!img || !layer) return;
+
+    var markerIndex = 0;
+    layer.style.pointerEvents = 'auto';
+
+    img.addEventListener('click', function(e) {
+      if (markerIndex >= d.anomalies.length) return;
+
       var rect = img.getBoundingClientRect();
-      var x = ((e.clientX-rect.left)/img.offsetWidth*100).toFixed(1);
-      var y = ((e.clientY-rect.top)/img.offsetHeight*100).toFixed(1);
-      var a = d.anomalies[cartoCount-1];
-      var col = a ? (a.criticite==='Critique'?'#D44C4C':a.criticite==='Élevée'?'#E8821A':'#C9941A') : '#C9941A';
-      var layer = document.getElementById('carto-ml');
-      layer.style.pointerEvents = 'auto';
+      var x = ((e.clientX - rect.left) / rect.width * 100).toFixed(1);
+      var y = ((e.clientY - rect.top) / rect.height * 100).toFixed(1);
+
+      var a = d.anomalies[markerIndex];
+      var col = a.criticite === 'Critique' ? '#D44C4C' :
+                a.criticite === 'Élevée' ? '#E8821A' :
+                a.criticite === 'Moyenne' ? '#C9941A' : '#2B8A4E';
+
       var mm = document.createElement('div');
       mm.style.cssText = 'position:absolute;left:'+x+'%;top:'+y+'%;transform:translate(-50%,-50%);pointer-events:auto;cursor:pointer';
-      mm.innerHTML = '<div style="width:22px;height:22px;border-radius:50%;background:'+col+';color:#fff;display:flex;align-items:center;justify-content:center;font-size:8.5px;font-weight:700;border:2px solid rgba(255,255,255,.5)">'+String(cartoCount).padStart(2,'0')+'</div>';
-      mm.addEventListener('contextmenu', function(e2) { e2.preventDefault(); mm.remove(); });
+
+      mm.innerHTML =
+        '<div title="'+a.titre+'" style="width:24px;height:24px;border-radius:50%;background:'+col+';color:#fff;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;border:2px solid rgba(255,255,255,.7);box-shadow:0 2px 8px rgba(0,0,0,.35)">'+String(markerIndex + 1).padStart(2,'0')+'</div>';
+
+      mm.addEventListener('contextmenu', function(e2) {
+        e2.preventDefault();
+        mm.remove();
+      });
+
       layer.appendChild(mm);
+      markerIndex++;
     });
   }, 100);
 }
