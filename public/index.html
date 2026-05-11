@@ -783,12 +783,13 @@ async function generate() {
 
     renderAll(data);
 
-  } catch (err) {
+    } catch (err) {
     addLog('Erreur : ' + err.message, 'err');
     setP(0, 'Erreur analyse IA');
     await sleep(3000);
     goTo('upload', document.getElementById('n-upload'));
   }
+}
 
 // ═══════════════════════════════════════════
 // API CALL
