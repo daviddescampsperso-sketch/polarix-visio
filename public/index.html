@@ -1334,24 +1334,6 @@ function renderDash(d) {
   document.getElementById('r3').innerHTML = miniHtml + planHtml;
 }
 
-// ── MAP MARKER ──
-function addMapMarker(e, img, layerId, d) {
-  var rect = img.getBoundingClientRect();
-  var x = ((e.clientX - rect.left) / rect.width * 100).toFixed(1);
-  var y = ((e.clientY - rect.top) / rect.height * 100).toFixed(1);
-  mapCount++;
-  var layer = document.getElementById(layerId);
-  layer.style.pointerEvents = 'auto';
-  var a = d ? d.anomalies[mapCount-1] : null;
-  var col = a ? (a.criticite==='Critique'?'#D44C4C':a.criticite==='Élevée'?'#E8821A':'#C9941A') : '#C9941A';
-  var mm = document.createElement('div');
-  mm.style.cssText = 'position:absolute;left:'+x+'%;top:'+y+'%;transform:translate(-50%,-50%);pointer-events:auto;cursor:pointer';
-  mm.innerHTML = '<div style="width:22px;height:22px;border-radius:50%;background:'+col+';color:#fff;display:flex;align-items:center;justify-content:center;font-size:8.5px;font-weight:700;border:2px solid rgba(255,255,255,.5);box-shadow:0 2px 6px rgba(0,0,0,.3)">'+String(mapCount).padStart(2,'0')+'</div>';
-  mm.title = (a ? a.titre : 'Zone') + ' — clic droit pour supprimer';
-  mm.addEventListener('contextmenu', function(e2) { e2.preventDefault(); mm.remove(); });
-  layer.appendChild(mm);
-}
-
 // ── SYNTHESE ──
 function renderSyn(d) {
   var s = d.scores;
@@ -1423,7 +1405,7 @@ var mp = d._mapPhoto || sentPhotos.find(function(p) {
   renderStoredMarkers('carto-ml', d);
 
   var markerIndex = d._mapMarkers.length;
-  layer.style.pointerEvents = 'auto';
+  layer.style.pointerEvents = 'none';
 
   img.addEventListener('click', function(e) {
     if (markerIndex >= d.anomalies.length) return;
