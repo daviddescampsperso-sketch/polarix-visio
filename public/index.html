@@ -795,9 +795,9 @@ async function generate() {
     setP(100, 'Rapport prêt ✓');
     await sleep(500);
 
-    renderAll(data);
+      renderAll(data);
 
-    } catch (err) {
+  } catch (err) {
     addLog('Erreur : ' + err.message, 'err');
     setP(0, 'Erreur analyse IA');
     await sleep(3000);
