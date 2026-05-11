@@ -923,15 +923,16 @@ function generateId() {
 function saveMission() {
   if (!report) return;
   var missionData = {
-    id: generateId(),
-    ref: mission.ref,
-    immeuble: mission.imm,
-    adresse: mission.adr,
-    syndic: mission.syn,
-    surface: mission.surf,
-    date: mission.date,
-    report: report,
-    created_at: new Date().toISOString()
+  id: generateId(),
+  ref: mission.ref,
+  immeuble: mission.imm,
+  adresse: mission.adr,
+  syndic: mission.syn,
+  surface: mission.surf,
+  date: mission.date,
+  report: report,
+  photos: photos,
+  created_at: new Date().toISOString()
   };
 
   fetch('/api/missions', {
@@ -1003,7 +1004,7 @@ function loadMission(id) {
       syn: m.syndic, surf: m.surface, date: m.date
     };
     report = m.report;
-    photos = [];
+    photos = m.photos || [];
     renderAll(m.report);
     document.getElementById('save-bar').style.display = 'none';
   }).catch(function(e) {
