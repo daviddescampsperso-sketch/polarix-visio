@@ -777,8 +777,81 @@ async function generate() {
     }
 
     setP(75, 'Consolidation du rapport…');
-    var data = await consolidateReport(photoAnalyses);
 
+var data;
+
+try {
+  data = await consolidateReport(photoAnalyses);
+} catch(e) {
+  addLog('Consolidation IA échouée — rapport fallback généré', 'err');
+  data = buildFallbackReport(photoAnalyses);
+}
+
+function buildFallbackReport(photoAnalyses) {
+  var anomalies = [];
+
+  photoAnalyses.forEach(function(pa, photoIndex) {
+    (pa.anomalies || []).forEach(function(a) {
+      anomalies.push({
+        id: 'A' + (anomalies.length + 1),
+        zone: pa.zone || 'Zone inspectée',
+        titre: a.titre || 'Anomalie détectée',
+        criticite: a.criticite || 'Moyenne',
+        urgence: a.urgence || '3-6 mois',
+        constat: a.constat || pa.summary || 'Constat visuel à confirmer.',
+        risque: a.risque || 'Risque à évaluer.',
+        action: a.action || 'Contrôle complémentaire recommandé.',
+        photo_index: photoIndex
+      });
+    });
+  });
+
+  if (!anomalies.length) {
+    anomalies.push({
+      id: 'A1',
+      zone: 'Inspection générale',
+      titre: 'Aucune anomalie majeure détectée',
+      criticite: 'Faible',
+      urgence: '6-12 mois',
+      constat: 'Analyse visuelle sans anomalie critique évidente.',
+      risque: 'Surveillance préventive recommandée.',
+      action: 'Contrôle périodique.',
+      photo_index: 0
+    });
+  }
+
+  return {
+    visio_index: 65,
+    niveau_vigilance: 'Vigilance moyenne',
+    synthese_courte: 'Rapport généré à partir des analyses individuelles. Consolidation IA non disponible.',
+    points_cles: [
+      'Analyse photo par photo réalisée.',
+      'Anomalies regroupées automatiquement.',
+      'Priorisation indicative à confirmer.',
+      'Contrôle terrain complémentaire recommandé.'
+    ],
+    scores: {
+      etancheite: 65,
+      securite: 65,
+      facades: 65,
+      eaux_pluviales: 65,
+      maintenance: 65
+    },
+    anomalies: anomalies,
+    budget: {
+      toiture: { min: 1000, max: 3000 },
+      ep: { min: 500, max: 1500 },
+      facades: { min: 1000, max: 3000 },
+      securite: { min: 500, max: 2000 }
+    },
+    budget_total_min: 3000,
+    budget_total_max: 9500
+  };
+}
+
+
+
+    
     setP(90, 'Structuration du rapport…');
     addLog('Anomalies : ' + data.anomalies.length, 'ok');
     addLog('VISIO INDEX : ' + data.visio_index + '/100', 'ok');
@@ -935,7 +1008,11 @@ async function analyzeSinglePhoto(photo, index) {
     txt = txt.substring(start, end + 1);
   }
 
+try {
   return JSON.parse(txt);
+} catch(e) {
+  console.error('JSON consolidation invalide:', txt);
+  throw new Error('JSON consolidation invalide : ' + e.message);
 }
 
 // ═══════════════════════════════════════════
