@@ -1239,12 +1239,11 @@ function renderSc(d) {
 function renderCarto(d) {
   var sentPhotos = d._sentPhotos || photos;
 
-  // Même logique que le tableau de bord : map.jpg d'abord
-  var mp = sentPhotos.find(function(p) {
-    return /^map\./.test(p.name.toLowerCase());
-  }) || sentPhotos.find(function(p) {
-    return p.cat === 'toiture';
-  }) || sentPhotos[0];
+var mp = sentPhotos.find(function(p) {
+  return /^map\./.test(p.name.toLowerCase());
+}) || sentPhotos.find(function(p) {
+  return p.cat === 'toiture';
+}) || sentPhotos[0];
 
   document.getElementById('carto-in').innerHTML =
     '<div style="display:grid;grid-template-columns:2fr 1fr;gap:12px">' +
@@ -1272,7 +1271,7 @@ function renderCarto(d) {
     if (!img || !layer) return;
 
     var markerIndex = 0;
-    layer.style.pointerEvents = 'auto';
+    layer.style.pointerEvents = 'none';
 
     img.addEventListener('click', function(e) {
       if (markerIndex >= d.anomalies.length) return;
