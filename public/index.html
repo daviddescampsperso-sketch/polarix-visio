@@ -637,8 +637,21 @@ document.getElementById('fi').addEventListener('change', function() { handleFile
 function goTo(name, el) {
   document.querySelectorAll('.panel').forEach(function(p) { p.classList.remove('on'); });
   document.querySelectorAll('.nav-item').forEach(function(i) { i.classList.remove('on'); });
-  document.getElementById('panel-' + name).classList.add('on');
+
+  var panel = document.getElementById('panel-' + name);
+  if (panel) panel.classList.add('on');
   if (el) el.classList.add('on');
+
+  if (report) {
+    if (name === 'dash') renderDash(report);
+    if (name === 'syn') renderSyn(report);
+    if (name === 'scores') renderSc(report);
+    if (name === 'carto') renderCarto(report);
+    if (name === 'anom') renderAnom(report);
+    if (name === 'plan') renderPlan(report);
+    if (name === 'budget') renderBud(report);
+    if (name === 'anx') renderAnx();
+  }
 }
 
 // ═══════════════════════════════════════════
@@ -1085,6 +1098,7 @@ function deleteMission(id, e) {
 // RENDER ALL
 // ═══════════════════════════════════════════
 function renderAll(d) {
+  report = d;
   document.getElementById('tb-imm').textContent = mission.imm;
   document.getElementById('tb-adr').textContent = mission.adr;
   document.getElementById('tb-ref').textContent = mission.ref;
