@@ -1009,6 +1009,43 @@ function buildDonut(b, size) {
   return '<svg width="'+size+'" height="'+size+'" viewBox="0 0 '+size+' '+size+'">'+arcs+'</svg>';
 }
 
+function getMarkerColor(a) {
+  if (!a) return '#C9941A';
+  return a.criticite === 'Critique' ? '#D44C4C' :
+         a.criticite === 'Elevee' || a.criticite === 'Élevée' ? '#E8821A' :
+         a.criticite === 'Moyenne' ? '#C9941A' :
+         '#2B8A4E';
+}
+
+function renderStoredMarkers(layerId, d) {
+  var layer = document.getElementById(layerId);
+  if (!layer || !d || !d._mapMarkers) return;
+
+  layer.innerHTML = '';
+  layer.style.pointerEvents = 'auto';
+
+  d._mapMarkers.forEach(function(m, i) {
+    var a = d.anomalies[m.index] || d.anomalies[i];
+    var col = getMarkerColor(a);
+
+    var mm = document.createElement('div');
+    mm.style.cssText = 'position:absolute;left:'+m.x+'%;top:'+m.y+'%;transform:translate(-50%,-50%);pointer-events:auto;cursor:pointer;z-index:5';
+
+    mm.innerHTML =
+      '<div title="'+(a ? a.titre : 'Zone')+'" style="width:24px;height:24px;border-radius:50%;background:'+col+';color:#fff;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;border:2px solid rgba(255,255,255,.7);box-shadow:0 2px 8px rgba(0,0,0,.35)">'+String(i + 1).padStart(2,'0')+'</div>';
+
+    mm.addEventListener('contextmenu', function(e) {
+      e.preventDefault();
+      d._mapMarkers.splice(i, 1);
+      renderStoredMarkers('carto-ml', d);
+      renderStoredMarkers('map-ml', d);
+    });
+
+    layer.appendChild(mm);
+  });
+}
+
+  
 // ═══════════════════════════════════════════
 // MISSIONS — SAUVEGARDE & HISTORIQUE
 // ═══════════════════════════════════════════
@@ -1250,6 +1287,10 @@ function renderDash(d) {
       '</div>' +
     '</div>';
 
+  setTimeout(function() {
+  renderStoredMarkers('map-ml', d);
+  }, 100);
+
   // Map click handler
   setTimeout(function() {
     var img = document.getElementById('mapimg');
@@ -1373,41 +1414,37 @@ var mp = d._mapPhoto || sentPhotos.find(function(p) {
       '</div>' +
     '</div>';
 
-  setTimeout(function() {
-    var img = document.getElementById('carto-img');
-    var layer = document.getElementById('carto-ml');
-    if (!img || !layer) return;
+ setTimeout(function() {
+  var img = document.getElementById('carto-img');
+  var layer = document.getElementById('carto-ml');
+  if (!img || !layer) return;
 
-    var markerIndex = 0;
-    layer.style.pointerEvents = 'none';
+  if (!d._mapMarkers) d._mapMarkers = [];
 
-    img.addEventListener('click', function(e) {
-      if (markerIndex >= d.anomalies.length) return;
+  renderStoredMarkers('carto-ml', d);
 
-      var rect = img.getBoundingClientRect();
-      var x = ((e.clientX - rect.left) / rect.width * 100).toFixed(1);
-      var y = ((e.clientY - rect.top) / rect.height * 100).toFixed(1);
+  var markerIndex = d._mapMarkers.length;
+  layer.style.pointerEvents = 'auto';
 
-      var a = d.anomalies[markerIndex];
-      var col = a.criticite === 'Critique' ? '#D44C4C' :
-                a.criticite === 'Élevée' ? '#E8821A' :
-                a.criticite === 'Moyenne' ? '#C9941A' : '#2B8A4E';
+  img.addEventListener('click', function(e) {
+    if (markerIndex >= d.anomalies.length) return;
 
-      var mm = document.createElement('div');
-      mm.style.cssText = 'position:absolute;left:'+x+'%;top:'+y+'%;transform:translate(-50%,-50%);pointer-events:auto;cursor:pointer';
+    var rect = img.getBoundingClientRect();
+    var x = ((e.clientX - rect.left) / rect.width * 100).toFixed(1);
+    var y = ((e.clientY - rect.top) / rect.height * 100).toFixed(1);
 
-      mm.innerHTML =
-        '<div title="'+a.titre+'" style="width:24px;height:24px;border-radius:50%;background:'+col+';color:#fff;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;border:2px solid rgba(255,255,255,.7);box-shadow:0 2px 8px rgba(0,0,0,.35)">'+String(markerIndex + 1).padStart(2,'0')+'</div>';
-
-      mm.addEventListener('contextmenu', function(e2) {
-        e2.preventDefault();
-        mm.remove();
-      });
-
-      layer.appendChild(mm);
-      markerIndex++;
+    d._mapMarkers.push({
+      x: x,
+      y: y,
+      index: markerIndex
     });
-  }, 100);
+
+    markerIndex++;
+
+    renderStoredMarkers('carto-ml', d);
+    renderStoredMarkers('map-ml', d);
+  });
+}, 100);
 }
 
 // ── ANOMALIES ──
