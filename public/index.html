@@ -1292,10 +1292,9 @@ function renderDash(d) {
   }, 100);
 
   // Map click handler
-  setTimeout(function() {
-    var img = document.getElementById('mapimg');
-    if (img) img.addEventListener('click', function(e) { addMapMarker(e, img, 'map-ml', d); });
-  }, 100);
+ setTimeout(function() {
+  renderStoredMarkers('map-ml', d);
+}, 100);
 
   // ROW 3
   var mini5 = d.anomalies.slice(0,5);
